@@ -2,6 +2,8 @@
 $nomProjet = 'ServiceCourt';
 $auteur = 'Michael Matinyan';
 $versionPhp = PHP_VERSION;
+
+declare(strict_types=1);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
