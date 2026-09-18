@@ -6,6 +6,8 @@ require_once __DIR__ . '/Controleurs/erreur-controleur.php';
 $action = $_GET['action'] ?? 'accueil';
 
 try {
+    require_once __DIR__ . '/config/bd.php';
+
     switch ($action) {
         case 'accueil':
             require_once __DIR__ . '/Controleurs/accueil-controleur.php';
