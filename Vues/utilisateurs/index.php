@@ -8,7 +8,6 @@
     <table border="1">
         <thead>
             <tr>
-                <th>ID</th>
                 <th>Prénom</th>
                 <th>Nom</th>
                 <th>Courriel</th>
@@ -19,9 +18,16 @@
         <tbody>
             <?php foreach ($utilisateurs as $utilisateur): ?>
                 <tr>
-                    <td><?= htmlspecialchars((string) $utilisateur['id'], ENT_QUOTES, 'UTF-8') ?></td>
-                    <td><?= htmlspecialchars($utilisateur['prenom'] ?? '', ENT_QUOTES, 'UTF-8') ?></td>
-                    <td><?= htmlspecialchars($utilisateur['nom'] ?? '', ENT_QUOTES, 'UTF-8') ?></td>
+                    <td>
+                        <a href="index.php?action=utilisateur&id=<?= (int) $utilisateur['id'] ?>">
+                            <?= htmlspecialchars($utilisateur['prenom'] ?? '', ENT_QUOTES, 'UTF-8') ?>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="index.php?action=utilisateur&id=<?= (int) $utilisateur['id'] ?>">
+                            <?= htmlspecialchars($utilisateur['nom'] ?? '', ENT_QUOTES, 'UTF-8') ?>
+                        </a>
+                    </td>
                     <td><?= htmlspecialchars($utilisateur['courriel'] ?? '', ENT_QUOTES, 'UTF-8') ?></td>
                     <td><?= htmlspecialchars($utilisateur['ROLE'] ?? '', ENT_QUOTES, 'UTF-8') ?></td>
                     <td><?= htmlspecialchars($utilisateur['date_creation'] ?? '', ENT_QUOTES, 'UTF-8') ?></td>

@@ -11,7 +11,7 @@
         </li>
         <br>
         <li>
-            Récit 2 : Comme joueur, je veux réserver un terrain disponible sur une horaire spécifique afin de garantir ma place au club.
+            Récit 2 : Comme joueur, je veux réserver un terrain disponible sur une horaire spécifique afin de garantir ma place au club. - **Complété**
             <ul>
                 <li>Critère A : Le système empêche la validation de la réservation si une autre réservation existante.</li>
                 <li>Critère B : Un message de confirmation de réservation s'affiche à l'écran après la soumission réussie.</li>
@@ -19,7 +19,7 @@
         </li>
         <br>
         <li>
-            Récit 3 : Comme joueur, je veux pouvoir annuler ma réservation au moins 24 heures à l'avance afin de libérer le terrain pour d'autres membres.
+            Récit 3 : Comme joueur, je veux pouvoir annuler ma réservation au moins 24 heures à l'avance afin de libérer le terrain pour d'autres membres. - **Complété**
             <ul>
                 <li>Critère A : Le bouton d'annulation est désactivé ou masqué si la réservation a lieu dans moins de 24 heures.</li>
                 <li>Critère B : L'annulation met immédiatement à jour le statut du terrain concerné à « Disponible » dans le calendrier.</li>

@@ -11,4 +11,17 @@ function obtenirTousLesUtilisateurs(PDO $pdo): array {
     
     return $requete->fetchAll();
 }
+
+function obtenirUtilisateur(PDO $pdo, int $id): ?array {
+    $requete = $pdo->prepare(
+        'SELECT id, nom, prenom, courriel, ROLE, date_creation 
+         FROM utilisateurs 
+         WHERE id = :id'
+    );
+    $requete->execute(['id' => $id]);
+
+    $utilisateur = $requete->fetch();
+
+    return $utilisateur ?: null;
+}
 ?>
