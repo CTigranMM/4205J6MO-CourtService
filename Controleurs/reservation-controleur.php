@@ -8,6 +8,7 @@ function afficherFormulaireReservation(PDO $pdo, int $utilisateurId, array $donn
 {
     $terrains = obtenirTousLesTerrains($pdo);
     require __DIR__ . '/../Vues/reservations/ajouter.php';
+    //
 }
 
 function traiterAjoutReservation(PDO $pdo): void
