@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/config/securite.php';
+require_once __DIR__ . '/Services/Authentification.php';
 require_once __DIR__ . '/Vues/Vue.php';
 require_once __DIR__ . '/Modeles/Utilisateur.php';
 require_once __DIR__ . '/Modeles/Reservation.php';
@@ -12,7 +13,7 @@ require_once __DIR__ . '/Controleurs/ControleurUtilisateur.php';
 require_once __DIR__ . '/Controleurs/ControleurReservation.php';
 require_once __DIR__ . '/Controleurs/ControleurErreur.php';
 
-demarrerSession();
+$auth = new Authentification();
 
 $action = $_GET['action'] ?? 'accueil';
 
@@ -28,7 +29,7 @@ try {
 
     $controleurAccueil = new ControleurAccueil($vue);
     $controleurRecits = new ControleurRecits($vue);
-    $controleurUtilisateur = new ControleurUtilisateur($utilisateursModele, $reservationsModele, $vue, $controleurErreur);
+    $controleurUtilisateur = new ControleurUtilisateur($utilisateursModele, $reservationsModele, $vue, $controleurErreur, $auth);
     $controleurReservation = new ControleurReservation($reservationsModele, $terrainsModele, $vue, $controleurErreur);
 
     switch ($action) {
@@ -48,6 +49,21 @@ try {
                 break;
             }
             $controleurUtilisateur->afficher($id);
+            break;
+        case 'inscription':
+            $controleurUtilisateur->afficherInscription();
+            break;
+        case 'inscription-traiter':
+            $controleurUtilisateur->traiterInscription();
+            break;
+        case 'connexion':
+            $controleurUtilisateur->afficherConnexion();
+            break;
+        case 'connexion-traiter':
+            $controleurUtilisateur->traiterConnexion();
+            break;
+        case 'deconnexion':
+            $controleurUtilisateur->deconnecter();
             break;
         case 'reservation-formulaire':
             $utilisateurId = filter_input(INPUT_GET, 'utilisateur_id', FILTER_VALIDATE_INT);
