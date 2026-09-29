@@ -11,3 +11,15 @@ INSERT INTO utilisateurs (nom, prenom, courriel, mot_de_passe, ROLE, date_creati
 ('Lavoie', 'Isabelle', 'isa.lavoie@example.com', 'motdepasse_hache_8', 'COACH', '2026-03-10 12:00:00'),
 ('Fortin', 'Nicolas', 'nic.fortin@example.com', 'motdepasse_hache_9', 'MEMBRE', '2026-04-22 15:55:00'),
 ('Pelletier', 'Émilie', 'emilie.pelletier@example.com', 'motdepasse_hache_10', 'MEMBRE', '2026-05-30 07:40:00');
+
+INSERT INTO terrains (nom_terrain, surface, emplacement) VALUES
+('Terrain 1', 'Gazon', 'EXTERIEUR'),
+('Terrain 2', 'Terre battue', 'EXTERIEUR'),
+('Terrain 3', 'Dur', 'EXTERIEUR'),
+('Terrain 4', 'Synthétique', 'INTERIEUR'),
+('Terrain 5', 'Dur', 'INTERIEUR'),
+('Terrain 6', 'Gazon', 'EXTERIEUR'),
+('Terrain 7', 'Terre battue', 'EXTERIEUR'),
+('Terrain 8', 'Synthétique', 'INTERIEUR'),
+('Terrain 9', 'Dur', 'INTERIEUR'),
+('Terrain 10', 'Gazon', 'EXTERIEUR');

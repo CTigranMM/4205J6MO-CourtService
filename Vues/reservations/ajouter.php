@@ -1,5 +1,3 @@
-<?php ob_start(); ?>
-
 <?php $premierChampErreur = !empty($erreurs) ? array_key_first($erreurs) : null; ?>
 
 <p><a href="index.php?action=utilisateur&id=<?= (int) $utilisateurId ?>">Retour au profil</a></p>
@@ -64,8 +62,3 @@
         <button type="submit">Ajouter la réservation</button>
     </div>
 </form>
-
-<?php
-$contenu = ob_get_clean();
-$titrePage = 'Ajouter une réservation';
-require __DIR__ . '/../gabarit.php';

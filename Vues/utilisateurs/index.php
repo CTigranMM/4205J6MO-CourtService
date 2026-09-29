@@ -1,5 +1,3 @@
-<?php ob_start(); ?>
-
 <h1>Utilisateurs de <?= htmlspecialchars($nomProjet, ENT_QUOTES, 'UTF-8') ?></h1>
 
 <?php if (empty($utilisateurs)): ?>
@@ -36,8 +34,3 @@
         </tbody>
     </table>
 <?php endif; ?>
-
-<?php
-$contenu = ob_get_clean();
-$titrePage = "Utilisateurs - " . $nomProjet;
-require __DIR__ . '/../gabarit.php';
