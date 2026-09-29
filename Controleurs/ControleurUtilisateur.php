@@ -57,16 +57,6 @@ class ControleurUtilisateur
 
     public function traiterInscription(): void
     {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            $this->erreurs->afficher('Méthode non permise.', 405);
-            return;
-        }
-
-        if (!verifierJetonCsrf($_POST['jeton_csrf'] ?? null)) {
-            $this->erreurs->afficher('Jeton CSRF invalide.', 403);
-            return;
-        }
-
         $donnees = [
             'prenom' => trim($_POST['prenom'] ?? ''),
             'nom' => trim($_POST['nom'] ?? ''),
@@ -121,16 +111,6 @@ class ControleurUtilisateur
 
     public function traiterConnexion(): void
     {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            $this->erreurs->afficher('Méthode non permise.', 405);
-            return;
-        }
-
-        if (!verifierJetonCsrf($_POST['jeton_csrf'] ?? null)) {
-            $this->erreurs->afficher('Jeton CSRF invalide.', 403);
-            return;
-        }
-
         $courriel = trim($_POST['courriel'] ?? '');
         $motDePasse = $_POST['mot_de_passe'] ?? '';
 

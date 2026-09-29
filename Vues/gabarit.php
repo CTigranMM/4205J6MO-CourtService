@@ -21,7 +21,12 @@ $nomProjet = 'ServiceCourt';
                 <?php $user = $utilisateurConnecte ?? $_SESSION['utilisateur'] ?? null; ?>
                 <?php if ($user): ?>
                     <li>Bonjour :  <?= htmlspecialchars($user['prenom'] . ' ' . $user['nom'], ENT_QUOTES, 'UTF-8') ?></li>
-                    <li><a href="index.php?action=deconnexion">Déconnexion</a></li>
+                    <li>
+                        <form action="index.php?action=deconnexion" method="post" style="display:inline;">
+                            <input type="hidden" name="jeton_csrf" value="<?= htmlspecialchars(jetonCsrf(), ENT_QUOTES, 'UTF-8') ?>">
+                            <button type="submit" style="background:none; border:none; color:inherit; text-decoration:underline; cursor:pointer; padding:0; font:inherit;">Déconnexion</button>
+                        </form>
+                    </li>
                 <?php else: ?>
                     <li><a href="index.php?action=inscription">Inscription</a></li>
                     <li><a href="index.php?action=connexion">Connexion</a></li>

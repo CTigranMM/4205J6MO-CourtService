@@ -4,7 +4,7 @@
     <p role="alert"><?= htmlspecialchars($erreur, ENT_QUOTES, 'UTF-8') ?></p>
 <?php endif; ?>
 
-<form action="index.php?action=connexion-traiter" method="post">
+<form action="index.php?action=authentifier" method="post">
     <input type="hidden" name="jeton_csrf"
            value="<?= htmlspecialchars(jetonCsrf(), ENT_QUOTES, 'UTF-8') ?>">
 
