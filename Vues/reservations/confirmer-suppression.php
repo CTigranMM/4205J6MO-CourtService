@@ -1,5 +1,3 @@
-<?php ob_start(); ?>
-
 <p><a href="index.php?action=utilisateur&id=<?= (int) $utilisateurId ?>">Retour au profil</a></p>
 
 <h2>Confirmer l'annulation</h2>
@@ -17,8 +15,3 @@
 
     <button type="submit">Confirmer l'annulation</button>
 </form>
-
-<?php
-$contenu = ob_get_clean();
-$titrePage = 'Annuler la réservation';
-require __DIR__ . '/../gabarit.php';

@@ -1,4 +1,3 @@
-<?php ob_start(); ?>
 <section>
     <h2>Récits utilisateurs et critères d'acceptation</h2>
     <ul>
@@ -67,7 +66,3 @@
         </li>
     </ul>
 </section>
-<?php
-$contenu = ob_get_clean();
-$titre = "Récits utilisateurs - " . $nomProjet;
-require __DIR__ . '/gabarit.php';

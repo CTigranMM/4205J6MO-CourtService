@@ -1,5 +1,3 @@
-<?php ob_start(); ?>
-
 <p><a href="index.php?action=utilisateurs">Retour aux utilisateurs</a></p>
 
 <article>
@@ -10,7 +8,3 @@
 </article>
 
 <?php require __DIR__ . '/../reservations/liste.php'; ?>
-
-<?php
-$contenu = ob_get_clean();
-require __DIR__ . '/../gabarit.php';
