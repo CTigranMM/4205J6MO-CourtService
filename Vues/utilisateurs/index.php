@@ -39,5 +39,5 @@
 
 <?php
 $contenu = ob_get_clean();
-$titre = "Utilisateurs - " . $nomProjet;
+$titrePage = "Utilisateurs - " . $nomProjet;
 require __DIR__ . '/../gabarit.php';

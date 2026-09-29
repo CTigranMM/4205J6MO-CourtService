@@ -1,7 +1,10 @@
 <?php
 declare(strict_types=1);
 
-$nomProjet = 'ServiceCourt';
+function afficherRecits(): void
+{
+    $nomProjet = 'ServiceCourt';
+    $titrePage = 'Récits - ' . $nomProjet;
 
-require_once __DIR__ . '/../Vues/recits.php';
-
+    require __DIR__ . '/../Vues/recits.php';
+}

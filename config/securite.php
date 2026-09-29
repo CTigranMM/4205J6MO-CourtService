@@ -8,7 +8,7 @@ function demarrerSession(): void
     }
 }
 
-function genererJetonCSRF(): string
+function jetonCsrf(): string
 {
     if (empty($_SESSION['jeton_csrf'])) {
         $_SESSION['jeton_csrf'] = bin2hex(random_bytes(32));
@@ -16,7 +16,7 @@ function genererJetonCSRF(): string
     return $_SESSION['jeton_csrf'];
 }
 
-function verifierJetonCSRF(?string $jetonRecu): bool
+function verifierJetonCsrf(?string $jetonRecu): bool
 {
     if (empty($_SESSION['jeton_csrf']) || empty($jetonRecu)) {
         return false;

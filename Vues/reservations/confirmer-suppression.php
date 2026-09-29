@@ -11,7 +11,7 @@
 </ul>
 
 <form action="index.php?action=supprimer-reservation" method="post">
-    <input type="hidden" name="jeton_csrf" value="<?= htmlspecialchars(genererJetonCSRF(), ENT_QUOTES, 'UTF-8') ?>">
+    <input type="hidden" name="jeton_csrf" value="<?= htmlspecialchars(jetonCsrf(), ENT_QUOTES, 'UTF-8') ?>">
     <input type="hidden" name="id" value="<?= (int) $reservation['id'] ?>">
     <input type="hidden" name="utilisateur_id" value="<?= (int) $utilisateurId ?>">
 
@@ -20,5 +20,5 @@
 
 <?php
 $contenu = ob_get_clean();
-$titre = 'Annuler la réservation';
+$titrePage = 'Annuler la réservation';
 require __DIR__ . '/../gabarit.php';

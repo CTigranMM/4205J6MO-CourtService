@@ -7,7 +7,7 @@ require_once __DIR__ . '/../Modeles/reservations-modele.php';
 function afficherListeUtilisateurs(PDO $pdo): void
 {
     $nomProjet = 'ServiceCourt';
-    $titre = 'Liste des utilisateurs - ' . $nomProjet;
+    $titrePage = 'Liste des utilisateurs - ' . $nomProjet;
     $utilisateurs = obtenirTousLesUtilisateurs($pdo);
     require_once __DIR__ . '/../Vues/utilisateurs/index.php';
 }

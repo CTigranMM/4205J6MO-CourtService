@@ -1,9 +1,12 @@
 <?php
 declare(strict_types=1);
 
-$nomProjet = 'ServiceCourt';
-$auteur = 'Michael Matinyan';
-$versionPhp = PHP_VERSION;
+function afficherAccueil(): void
+{
+    $nomProjet = 'ServiceCourt';
+    $titrePage = 'Accueil - ' . $nomProjet;
+    $auteur = 'Michael Matinyan';
+    $versionPhp = PHP_VERSION;
 
-require_once __DIR__ . '/../Vues/accueil.php';
-
+    require __DIR__ . '/../Vues/accueil.php';
+}

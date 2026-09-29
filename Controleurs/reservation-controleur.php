@@ -17,7 +17,7 @@ function traiterAjoutReservation(PDO $pdo): void
         return;
     }
 
-    if (!verifierJetonCSRF($_POST['jeton_csrf'] ?? null)) {
+    if (!verifierJetonCsrf($_POST['jeton_csrf'] ?? null)) {
         afficherErreur('Jeton CSRF invalide.', 403);
         return;
     }
@@ -84,7 +84,7 @@ function traiterSuppressionReservation(PDO $pdo): void
         return;
     }
 
-    if (!verifierJetonCSRF($_POST['jeton_csrf'] ?? null)) {
+    if (!verifierJetonCsrf($_POST['jeton_csrf'] ?? null)) {
         afficherErreur('Jeton CSRF invalide.', 403);
         return;
     }
