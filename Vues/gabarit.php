@@ -11,7 +11,8 @@ $nomProjet = 'ServiceCourt';
 </head>
 <body>
     <header>
-        <h1>ServiceCourt</h1>
+        <div class="nav-container">
+            <a href="index.php?action=accueil" class="nav-brand">ServiceCourt</a>
         <nav>
             <ul>
                 <li><a href="index.php?action=accueil">Accueil</a></li>
@@ -20,11 +21,11 @@ $nomProjet = 'ServiceCourt';
                 
                 <?php $user = $utilisateurConnecte ?? $_SESSION['utilisateur'] ?? null; ?>
                 <?php if ($user): ?>
-                    <li>Bonjour :  <?= htmlspecialchars($user['prenom'] . ' ' . $user['nom'], ENT_QUOTES, 'UTF-8') ?></li>
+                    <li><span class="nav-text">Bonjour : <?= htmlspecialchars($user['prenom'] . ' ' . $user['nom'], ENT_QUOTES, 'UTF-8') ?></span></li>
                     <li>
                         <form action="index.php?action=deconnexion" method="post" style="display:inline;">
                             <input type="hidden" name="jeton_csrf" value="<?= htmlspecialchars(jetonCsrf(), ENT_QUOTES, 'UTF-8') ?>">
-                            <button type="submit" style="background:none; border:none; color:inherit; text-decoration:underline; cursor:pointer; padding:0; font:inherit;">Déconnexion</button>
+                            <button type="submit" class="nav-btn">Déconnexion</button>
                         </form>
                     </li>
                 <?php else: ?>
@@ -33,6 +34,7 @@ $nomProjet = 'ServiceCourt';
                 <?php endif; ?>
             </ul>
         </nav>
+        </div>
     </header>
 
     <main>
