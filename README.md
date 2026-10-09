@@ -1,82 +1,59 @@
-# ServiceCourt
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-Application web transactionnelle permettant la gestion et la réservation de terrains de tennis. Elle aide les joueurs réguliers, les entraîneurs et les administrateurs de clubs à centraliser les disponibilités et éviter les conflits d'horaire.
+<p align="center">
+<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+</p>
 
-## Prérequis
+## About Laravel
 
-- **PHP** : Version 8.0 ou supérieure avec l'extension `pdo_mysql` activée.
-- **Serveur Web** : Apache (intégré avec AMPPS, XAMPP, Laragon ou autonome).
-- **Serveur de base de données** : MySQL 8.x / MariaDB 10.x.
-- **Outil de gestion de base de données** : MySQL Workbench, phpMyAdmin ou client CLI MySQL.
+Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
----
+- [Simple, fast routing engine](https://laravel.com/docs/routing).
+- [Powerful dependency injection container](https://laravel.com/docs/container).
+- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
+- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
+- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
+- [Robust background job processing](https://laravel.com/docs/queues).
+- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-## Reconstruction de la base de données
+Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-Les scripts SQL nécessaires à la création et au peuplement de la base de données se trouvent dans le dossier [`database/`](file:///c:/Projets/ServiceCourt/database) :
+## Learning Laravel
 
-1. **Création du schéma et des tables** :
-   Exécuter le script [`database/schema.sql`](file:///c:/Projets/ServiceCourt/database/schema.sql) pour créer le schéma `mydb` ainsi que l'ensemble des tables (`utilisateurs`, `abonnements`, `terrains`, `reservations`, `indisponibilites`) et leurs contraintes de clés étrangères.
+Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
 
-2. **Peuplement des données initiales** :
-   Exécuter le script [`database/ajout-10-lignes.sql`](file:///c:/Projets/ServiceCourt/database/ajout-10-lignes.sql) pour insérer le jeu d'essai initial (utilisateurs de test).
+If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-## Configuration PDO et Variables d'environnement
+## Laravel Sponsors
 
-La connexion à la base de données est gérée dans [`config/bd.php`](file:///c:/Projets/ServiceCourt/config/bd.php) à l'aide de l'extension **PDO** de PHP avec gestion stricte des exceptions (`PDO::ERRMODE_EXCEPTION`) et mode de récupération associatif (`PDO::FETCH_ASSOC`).
+We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
 
-Les informations de connexion sont récupérées via des **variables d'environnement système ou serveur**, sans valeurs secrètes versionnées dans le code source :
+### Premium Partners
 
-| Variable d'environnement | Description | Exemple |
-| :--- | :--- | :--- |
-| `DB_HOST` | Hôte du serveur de base de données | `localhost` ou `127.0.0.1` |
-| `DB_PORT` | Port d'écoute de MySQL | `3306` |
-| `DB_DATABASE` | Nom de la base de données | `mydb` |
-| `DB_USERNAME` | Nom d'utilisateur de la base de données | *(votre identifiant local)* |
-| `DB_PASSWORD` | Mot de passe de l'utilisateur de base de données | *(votre mot de passe local)* |
+- **[Vehikl](https://vehikl.com)**
+- **[Tighten Co.](https://tighten.co)**
+- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
+- **[64 Robots](https://64robots.com)**
+- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
+- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
+- **[Redberry](https://redberry.international/laravel-development)**
+- **[Active Logic](https://activelogic.com)**
 
----
+## Contributing
 
-## Procédure d'installation et de démarrage
+Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
-1. **Cloner ou placer le projet** :
-   Placer le code source dans votre répertoire de travail (ex. `C:/Projets/ServiceCourt`).
+## Code of Conduct
 
-2. **Reconstruire la base de données** :
-   Exécuter `schema.sql` puis `ajout-10-lignes.sql` dans votre serveur MySQL local comme décrit ci-dessus.
+In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-3. **Configurer le serveur Apache (AMPPS)** :
-   Ajouter la configuration de l'alias et la définition des variables d'environnement dans le fichier de configuration Apache (`httpd.conf` ou `vhosts.conf`), en adaptant les chemins physiques et vos identifiants locaux :
+## Security Vulnerabilities
 
-   ```apache
-   Alias /ServiceCourt "C:/Projets/ServiceCourt"
+If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-   <Directory "C:/Projets/ServiceCourt">
-       Options -Indexes +FollowSymLinks
-       AllowOverride All
-       Require all granted
+## License
 
-       # Variables d'environnement pour la connexion PDO
-       SetEnv DB_HOST "localhost"
-       SetEnv DB_PORT "3306"
-       SetEnv DB_DATABASE "mydb"
-       SetEnv DB_USERNAME "votre_utilisateur"
-       SetEnv DB_PASSWORD "votre_mot_de_passe"
-   </Directory>
-   ```
-
-4. **Démarrer les services** :
-   - Démarrer le serveur **MySQL** dans AMPPS.
-   - Démarrer (ou redémarrer) le serveur **Apache** dans AMPPS.
-
-5. **Accéder à l'application** :
-   Ouvrir un navigateur web aux adresses suivantes :
-   - **Accueil** : [http://localhost/ServiceCourt/index.php](http://localhost/ServiceCourt/index.php)
-   - **Liste des utilisateurs** : [http://localhost/ServiceCourt/utilisateurs.php](http://localhost/ServiceCourt/utilisateurs.php)
-   - **Récits utilisateurs** : [http://localhost/ServiceCourt/recits.php](http://localhost/ServiceCourt/recits.php)
-
----
-
-## Compilation
-
-Aucune étape de compilation n'est requise pour ce projet (PHP / CSS natifs).
+The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

@@ -1,0 +1,13 @@
+*.log
+/.env*
+!/.env.example
+/auth.json
+/database/*.sqlite*
+/node_modules/
+/public/build/
+/public/hot
+/public/storage
+/storage/*.key
+/vendor/
+.phpunit.result.cache
+/.vscode/
