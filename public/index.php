@@ -1,5 +1,3 @@
-<?php if ( ?>
-
 <?php
 
 use Illuminate\Foundation\Application;
