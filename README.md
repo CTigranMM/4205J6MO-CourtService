@@ -1,59 +1,113 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# ServiceCourt 
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Application web transactionnelle permettant la gestion et la réservation de terrains de tennis pour joueurs, entraîneurs et administrateurs d'un club sportif.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Récits utilisateurs et critères d'acceptation (Chapitre 07)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Récits reconstruits et complétés cette semaine :
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+* **Récit 2 : Réserver un terrain (Création & Consultation)** — **Complété**
+  * *En tant que joueur, je veux réserver un terrain disponible afin de garantir ma place au club.*
+  * **Critère A** : Formulaire de création de réservation avec validation serveur obligatoire (`EnregistrerReservationRequest`) : terrain existant, date et heure valides, date de fin obligatoirement postérieure au début.
+  * **Critère B** : Redirection vers la vue détail et affichage d'un message flash de confirmation (`session('status')`) après soumission réussie.
+  * **Critère C** : Consultation sous forme de liste paginée (`/reservations`) et page de détail (`/reservations/{id}`) avec chargement hâtif (*Eager Loading* `with(['terrain', 'user'])`).
 
-## Learning Laravel
+* **Récit 3 : Modifier et Annuler / Supprimer une réservation (CRUD complet)** — **Complété**
+  * *En tant que joueur, je veux pouvoir modifier mes horaires ou supprimer ma réservation afin de libérer le court pour d'autres membres.*
+  * **Critère A** : Formulaire de modification (`/reservations/{id}/edit`) prérempli avec les données existantes de la réservation et conservation de la saisie (`old()`) en cas d'erreur de validation.
+  * **Critère B** : Suppression sécurisée de la réservation via une requête HTTP `DELETE` avec protection CSRF (`@csrf` + `@method('DELETE')`), sans jamais utiliser `GET`.
+  * **Critère C** : Prise en charge des cas limites (réservations à moins de 24h, réservations passées et réservations déjà annulées) préparés et vérifiables dans le seeder.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### Autres récits du domaine (étapes ultérieures) :
+* **Récit 1** : Comme joueur, je veux consulter les terrains de tennis disponibles à une date précise afin de planifier mon match.
+* **Récit 4** : Comme entraîneur, je veux réserver un terrain pour une session récurrente sans devoir réserver manuellement chaque semaine.
+* **Récit 5** : Comme administrateur, je veux pouvoir bloquer un terrain spécifique afin d'empêcher les réservations pendant des travaux de maintenance.
+* **Récit 6** : Comme membre, je veux modifier mes informations de profil (courriel) afin que le club puisse me contacter.
+* **Récit 7** : Comme administrateur, je veux consulter la liste de toutes les réservations de la journée afin de préparer l'accueil.
+* **Récit 8** : Comme joueur, je veux voir l'historique complet de mes réservations passées afin de suivre ma fréquence de jeu.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## Installation et reconstruction de la base locale jetable
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 1. Démarrer les services Docker
+Assurez-vous que Docker Desktop est démarré, puis lancez les conteneurs :
+```powershell
+docker compose up -d
+```
 
-### Premium Partners
+### 2. Reconstruire et peupler la base de données
+Exécutez la commande suivante depuis votre terminal hôte PowerShell pour réinitialiser la base locale et charger le jeu d'essai :
+```powershell
+docker compose exec app php artisan migrate:fresh --seed
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 3. Données de démonstration et cas limites
+Le seeder ([DatabaseSeeder.php](database/seeders/DatabaseSeeder.php)) utilise l'enchaînement fluide des factories et génère :
+* **1 utilisateur principal pour les tests de démonstration** :
+  * **Courriel** : `joueur@servicecourt.ca`
+  * **Mot de passe** : `password`
+* **4 terrains de tennis réalistes** : Philippe-Chatrier (terre battue), Arthur Ashe (dur), Centre Court (gazon synthétique) et Court Entraînement.
+* **4 cas limites explicitement préparés** :
+  1. **Terrain vide** (*Court Entraînement*) : aucun enregistrement lié, permettant de valider l'affichage du cas vide (`@forelse ... @empty`).
+  2. **Réservation à moins de 24h** : réservation prévue aujourd'hui dans 2 heures (permettant d'évaluer la règle d'interdiction d'annulation à court préavis).
+  3. **Réservation passée** : réservation hier de 10h à 11h (historique non modifiable).
+  4. **Réservation annulée** : réservation portant le statut `annulee` (distinction visuelle).
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Routes principales de l'application
 
-## Code of Conduct
+Toutes les opérations CRUD sont déclarées via un contrôleur de ressources (`Route::resource('reservations', ReservationController::class)`) :
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+| Méthode HTTP | URL | Nom de la route | Contrôleur & Action | Description / Rôle |
+| :--- | :--- | :--- | :--- | :--- |
+| `GET` | `/` | - | Redirection | Redirige automatiquement vers `/reservations` |
+| `GET` | `/reservations` | `reservations.index` | `ReservationController@index` | Liste paginée de toutes les réservations (Eager loading) |
+| `GET` | `/reservations/create` | `reservations.create` | `ReservationController@create` | Formulaire d'ajout d'une nouvelle réservation |
+| `POST` | `/reservations` | `reservations.store` | `ReservationController@store` | Validation (Form Request) et insertion avec message flash |
+| `GET` | `/reservations/{reservation}` | `reservations.show` | `ReservationController@show` | Fiche détaillée d'une réservation (404 si introuvable) |
+| `GET` | `/reservations/{reservation}/edit` | `reservations.edit` | `ReservationController@edit` | Formulaire prérempli pour modifier une réservation |
+| `PATCH` / `PUT` | `/reservations/{reservation}` | `reservations.update` | `ReservationController@update` | Validation et mise à jour de la réservation |
+| `DELETE` | `/reservations/{reservation}` | `reservations.destroy` | `ReservationController@destroy` | Suppression sécurisée (formulaire POST + `@method('DELETE')`) |
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Décision concernant les transactions
 
-## License
+Pour les opérations CRUD actuelles sur la ressource `Reservation`, chaque opération (création, mise à jour, suppression) n'effectue qu'**une seule écriture SQL atomique** dans la table `reservations`. 
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Conformément aux principes de la section 7.4 et 7.7 du cours, une transaction `DB::transaction()` n'est nécessaire que si deux écritures dépendantes doivent réussir ou échouer ensemble. Une transaction sera introduite dans une étape ultérieure lorsque le domaine combinera deux écritures inséparables (par exemple : déduire un crédit sur un forfait d'abonnement ET enregistrer la réservation).
+
+---
+
+## Exécution des tests automatisés
+
+La totalité du CRUD (consultation, formulaires, validation côté serveur, préremplissage, redirection, flash messages et suppression) est couverte par une suite de tests Feature :
+
+```powershell
+docker compose exec app php artisan test
+```
+
+Résultat des tests :
+```text
+   PASS  Tests\Unit\ExampleTest
+  ✓ that true is true
+
+   PASS  Tests\Feature\ExampleTest
+  ✓ the application returns a successful response
+
+   PASS  Tests\Feature\ReservationCrudTest
+  ✓ peut afficher la liste des reservations
+  ✓ peut afficher le formulaire de creation
+  ✓ peut enregistrer une nouvelle reservation
+  ✓ la validation echoue si champs manquants
+  ✓ peut afficher le detail d une reservation
+  ✓ peut afficher le formulaire de modification pre rempli
+  ✓ peut modifier une reservation
+  ✓ peut supprimer une reservation
+
+  Tests:    10 passed (28 assertions)
+```
