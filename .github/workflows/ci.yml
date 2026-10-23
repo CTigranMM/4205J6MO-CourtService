@@ -1,0 +1,15 @@
+name: Construire l'application Laravel
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  verifier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Construire l'image du commit
+        run: docker build --pull -t app-php:${{ github.sha }} .
+      - name: Vérifier la syntaxe PHP
+        run: docker run --rm app-php:${{ github.sha }} php -l public/index.php
