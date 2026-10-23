@@ -18,7 +18,9 @@ class TerrainFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'nom_terrain' => 'Court ' . fake()->numberBetween(1, 15),
+            'surface' => fake()->randomElement(['Terre battue', 'Gazon synthétique', 'Dur', 'Béton poreux']),
+            'emplacement' => fake()->randomElement(['INTERIEUR', 'EXTERIEUR']),
         ];
     }
 }
