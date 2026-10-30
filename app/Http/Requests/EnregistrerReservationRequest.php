@@ -26,6 +26,7 @@ class EnregistrerReservationRequest extends FormRequest
             'date_heure_debut' => ['required', 'date'],
             'date_heure_fin' => ['required', 'date', 'after:date_heure_debut'],
             'statut' => ['nullable', 'in:confirmee,annulee'],
+            'document' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,pdf', 'max:2048'],
         ];
     }
 
@@ -43,6 +44,9 @@ class EnregistrerReservationRequest extends FormRequest
             'date_heure_fin.date' => 'La date et l\'heure de fin doivent être une date valide.',
             'date_heure_fin.after' => 'La date et l\'heure de fin doivent être postérieures au début.',
             'statut.in' => 'Le statut doit être "confirmee" ou "annulee".',
+            'document.file' => 'Le champ document doit être un fichier valide.',
+            'document.mimes' => 'Le document doit être un fichier de type : jpg, jpeg, png, webp ou pdf.',
+            'document.max' => 'Le document ne doit pas dépasser 2 048 Ko.',
         ];
     }
 }

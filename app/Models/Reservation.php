@@ -17,6 +17,7 @@ class Reservation extends Model
         'date_heure_debut',
         'date_heure_fin',
         'statut',
+        'document_path',
     ];
 
     protected function casts(): array

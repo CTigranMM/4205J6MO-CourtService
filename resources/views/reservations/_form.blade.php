@@ -1,9 +1,9 @@
 @csrf
 
 <div class="form-group">
-    <label for="terrain_id">Terrain</label>
+    <label for="terrain_id">{{ __('Terrain') }}</label>
     <select id="terrain_id" name="terrain_id">
-        <option value="">-- Sélectionnez un court --</option>
+        <option value="">{{ __('-- Sélectionnez un court --') }}</option>
         @foreach ($terrains as $terrain)
             <option value="{{ $terrain->id }}" {{ old('terrain_id', $reservation?->terrain_id) == $terrain->id ? 'selected' : '' }}>
                 {{ $terrain->nom_terrain }} ({{ $terrain->surface }} - {{ $terrain->emplacement }})
@@ -16,7 +16,7 @@
 </div>
 
 <div class="form-group">
-    <label for="date_heure_debut">Date et heure de début</label>
+    <label for="date_heure_debut">{{ __('Date et heure de début') }}</label>
     <input 
         type="datetime-local" 
         id="date_heure_debut" 
@@ -29,7 +29,7 @@
 </div>
 
 <div class="form-group">
-    <label for="date_heure_fin">Date et heure de fin</label>
+    <label for="date_heure_fin">{{ __('Date et heure de fin') }}</label>
     <input 
         type="datetime-local" 
         id="date_heure_fin" 
@@ -42,13 +42,13 @@
 </div>
 
 <div class="form-group">
-    <label for="statut">Statut</label>
+    <label for="statut">{{ __('Statut') }}</label>
     <select id="statut" name="statut">
         <option value="confirmee" {{ old('statut', $reservation?->statut ?? 'confirmee') === 'confirmee' ? 'selected' : '' }}>
-            Confirmée
+            {{ __('Confirmée') }}
         </option>
         <option value="annulee" {{ old('statut', $reservation?->statut) === 'annulee' ? 'selected' : '' }}>
-            Annulée
+            {{ __('Annulée') }}
         </option>
     </select>
     @error('statut')
@@ -56,7 +56,27 @@
     @enderror
 </div>
 
+<div class="form-group">
+    <label for="document">{{ __('Document') }}</label>
+
+    @if ($reservation?->document_path)
+        <div style="margin-bottom: 0.75rem;">
+            @if (preg_match('/\.(jpg|jpeg|png|webp)$/i', $reservation->document_path))
+                <img src="{{ Storage::disk('public')->url($reservation->document_path) }}" alt="{{ __('Document actuel') }}" style="max-width: 150px; display: block; margin-bottom: 0.5rem;">
+            @endif
+            <button type="submit" form="destroy-document-form" class="btn btn-sm btn-danger" onclick="return confirm('{{ __('Supprimer ce document ?') }}');">
+                {{ __('Supprimer le document') }}
+            </button>
+        </div>
+    @endif
+
+    <input type="file" id="document" name="document" accept="image/jpeg,image/png,image/webp,application/pdf">
+    @error('document')
+        <p class="error-message">{{ $message }}</p>
+    @enderror
+</div>
+
 <div class="actions-inline" style="margin-top: 1.5rem;">
-    <button type="submit" class="btn">Enregistrer</button>
-    <a href="{{ route('reservations.index') }}" class="btn btn-secondary">Annuler</a>
+    <button type="submit" class="btn">{{ __('Enregistrer') }}</button>
+    <a href="{{ route('reservations.index') }}" class="btn btn-secondary">{{ __('Annuler') }}</a>
 </div>
