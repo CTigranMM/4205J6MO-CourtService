@@ -8,6 +8,8 @@ use App\Models\Terrain;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
+use Throwable;
 
 class ReservationController extends Controller
 {
@@ -44,11 +46,22 @@ class ReservationController extends Controller
         // Comme dans la section 7.6 du cours, l'utilisateur est déterminé côté serveur (en attendant le chapitre 9)
         $user = User::query()->firstOrFail();
 
-        $reservation = Reservation::create([
-            ...$request->validated(),
-            'user_id' => $user->id,
-            'statut' => $request->validated('statut') ?? 'confirmee',
-        ]);
+        $data = $request->safe()->except('document');
+        $path = $request->file('document')?->store('reservations', 'public');
+
+        try {
+            $reservation = Reservation::create([
+                ...$data,
+                'document_path' => $path,
+                'user_id' => $user->id,
+                'statut' => $request->validated('statut') ?? 'confirmee',
+            ]);
+        } catch (Throwable $exception) {
+            if ($path) {
+                Storage::disk('public')->delete($path);
+            }
+            throw $exception;
+        }
 
         return redirect()->route('reservations.show', $reservation)
             ->with('status', 'Réservation créée avec succès.');
@@ -81,7 +94,25 @@ class ReservationController extends Controller
      */
     public function update(EnregistrerReservationRequest $request, Reservation $reservation): RedirectResponse
     {
-        $reservation->update($request->validated());
+        $data = $request->safe()->except('document');
+        $newPath = $request->file('document')?->store('reservations', 'public');
+        $oldPath = $reservation->document_path;
+
+        try {
+            $reservation->update([
+                ...$data,
+                ...($newPath ? ['document_path' => $newPath] : []),
+            ]);
+        } catch (Throwable $exception) {
+            if ($newPath) {
+                Storage::disk('public')->delete($newPath);
+            }
+            throw $exception;
+        }
+
+        if ($newPath && $oldPath) {
+            Storage::disk('public')->delete($oldPath);
+        }
 
         return redirect()->route('reservations.show', $reservation)
             ->with('status', 'Réservation modifiée avec succès.');
@@ -92,9 +123,28 @@ class ReservationController extends Controller
      */
     public function destroy(Reservation $reservation): RedirectResponse
     {
+        $documentPath = $reservation->document_path;
+
         $reservation->delete();
+
+        if ($documentPath) {
+            Storage::disk('public')->delete($documentPath);
+        }
 
         return redirect()->route('reservations.index')
             ->with('status', 'Réservation supprimée avec succès.');
+    }
+
+    /**
+     * Supprimer uniquement le document joint de la réservation (bouton poubelle).
+     */
+    public function destroyDocument(Reservation $reservation): RedirectResponse
+    {
+        if ($reservation->document_path) {
+            Storage::disk('public')->delete($reservation->document_path);
+            $reservation->update(['document_path' => null]);
+        }
+
+        return back()->with('status', 'Le document a été supprimé.');
     }
 }

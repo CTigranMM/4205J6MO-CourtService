@@ -260,3 +260,92 @@ textarea:focus {
     gap: 0.5rem;
     align-items: center;
 }
+
+/* Styles - Recherche asynchrone*/
+.search-box {
+    background: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.search-label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #212529;
+}
+
+.search-input {
+    width: 100%;
+    max-width: 100%;
+    padding: 0.6rem 0.85rem;
+    font-size: 0.95rem;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.search-status {
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin-top: 0.5rem;
+    min-height: 1.2rem;
+}
+
+.search-results {
+    list-style: none;
+    margin-top: 0.5rem;
+    padding: 0;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    background: #ffffff;
+    overflow: hidden;
+}
+
+.search-results:empty {
+    display: none;
+    border: none;
+}
+
+.search-results li {
+    border-bottom: 1px solid #f1f3f5;
+}
+
+.search-results li:last-child {
+    border-bottom: none;
+}
+
+.search-results a {
+    display: block;
+    padding: 0.65rem 1rem;
+    color: #1a56db;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: background-color 0.15s;
+}
+
+.search-results a:hover,
+.search-results a:focus {
+    background-color: #f1f5f9;
+    text-decoration: underline;
+}
+
+/* ==========================================================================
+   Styles - Gestion des fichiers téléversés
+   ========================================================================== */
+.current-document-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 0.85rem;
+}
+
+.document-preview-container img {
+    max-width: 260px;
+    height: auto;
+    border-radius: 4px;
+}
+

@@ -8,6 +8,22 @@
         <a href="{{ route('reservations.create') }}" class="btn">+ Nouvelle réservation</a>
     </div>
 
+    <div class="search-box">
+        <label for="search" class="search-label">Rechercher une réservation</label>
+        <input id="search" 
+               type="search" 
+               class="search-input"
+               placeholder="Court, joueur, surface" 
+               autocomplete="off" 
+               data-search-url="{{ route('recherche.reservations') }}" 
+               data-searching="Recherche en cours..." 
+               data-empty="Aucun résultat." 
+               data-count=":count résultat(s)." 
+               data-error="Recherche temporairement indisponible.">
+        <p id="search-status" role="status" aria-live="polite" class="search-status"></p>
+        <ul id="search-results" class="search-results"></ul>
+    </div>
+
     <table>
         <thead>
             <tr>
@@ -62,3 +78,7 @@
         {{ $reservations->links() }}
     </div>
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('js/recherche.js') }}" defer></script>
+@endpush

@@ -38,6 +38,19 @@
                     {{ ucfirst($reservation->statut) }}
                 </span>
             </li>
+            @if ($reservation->document_path)
+                <li>
+                    <strong>Document :</strong>
+                    <div style="margin-top: 0.5rem;">
+                        @if (preg_match('/\.(jpg|jpeg|png|webp)$/i', $reservation->document_path))
+                            <img src="{{ Storage::disk('public')->url($reservation->document_path) }}" alt="Document" style="max-width: 250px; display: block; margin-bottom: 0.5rem;">
+                        @endif
+                        <a href="{{ Storage::disk('public')->url($reservation->document_path) }}" target="_blank" class="btn btn-sm btn-outline">
+                            Consulter / Télécharger le document
+                        </a>
+                    </div>
+                </li>
+            @endif
         </ul>
 
         <div class="actions-inline">
