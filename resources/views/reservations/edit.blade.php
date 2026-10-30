@@ -3,7 +3,7 @@
 @section('title', 'Modifier la réservation #' . $reservation->id)
 
 @section('content')
-    <h2>Modifier la réservation #{{ $reservation->id }}</h2>
+    <h2>{{ __('Modifier la réservation #:id', ['id' => $reservation->id]) }}</h2>
 
     <div class="content-box">
         @if ($reservation->document_path)

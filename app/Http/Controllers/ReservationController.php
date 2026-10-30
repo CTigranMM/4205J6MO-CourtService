@@ -64,7 +64,7 @@ class ReservationController extends Controller
         }
 
         return redirect()->route('reservations.show', $reservation)
-            ->with('status', 'Réservation créée avec succès.');
+            ->with('status', __('Réservation créée avec succès.'));
     }
 
     /**
@@ -115,7 +115,7 @@ class ReservationController extends Controller
         }
 
         return redirect()->route('reservations.show', $reservation)
-            ->with('status', 'Réservation modifiée avec succès.');
+            ->with('status', __('Réservation modifiée avec succès.'));
     }
 
     /**
@@ -132,7 +132,7 @@ class ReservationController extends Controller
         }
 
         return redirect()->route('reservations.index')
-            ->with('status', 'Réservation supprimée avec succès.');
+            ->with('status', __('Réservation supprimée avec succès.'));
     }
 
     /**
@@ -145,6 +145,6 @@ class ReservationController extends Controller
             $reservation->update(['document_path' => null]);
         }
 
-        return back()->with('status', 'Le document a été supprimé.');
+        return back()->with('status', __('Le document a été supprimé.'));
     }
 }
