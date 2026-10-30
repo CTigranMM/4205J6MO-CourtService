@@ -45,9 +45,18 @@
                         @if (preg_match('/\.(jpg|jpeg|png|webp)$/i', $reservation->document_path))
                             <img src="{{ Storage::disk('public')->url($reservation->document_path) }}" alt="{{ __('Document') }}" style="max-width: 250px; display: block; margin-bottom: 0.5rem;">
                         @endif
-                        <a href="{{ Storage::disk('public')->url($reservation->document_path) }}" target="_blank" class="btn btn-sm btn-outline">
-                            {{ __('Consulter / Télécharger le document') }}
-                        </a>
+                        <div class="actions-inline" style="margin-top: 0.5rem;">
+                            <a href="{{ Storage::disk('public')->url($reservation->document_path) }}" target="_blank" class="btn btn-sm btn-outline">
+                                {{ __('Consulter / Télécharger le document') }}
+                            </a>
+                            <form method="post" action="{{ route('reservations.document.destroy', $reservation) }}" onsubmit="return confirm('{{ __('Supprimer ce document ?') }}');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-danger">
+                                    {{ __('Supprimer le document') }}
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </li>
             @endif
