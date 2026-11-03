@@ -5,7 +5,9 @@
 @section('content')
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
         <h2>{{ __('Réservations') }}</h2>
-        <a href="{{ route('reservations.create') }}" class="btn">{{ __('+ Nouvelle réservation') }}</a>
+        @auth
+            <a href="{{ route('reservations.create') }}" class="btn">{{ __('+ Nouvelle réservation') }}</a>
+        @endauth
     </div>
 
     <div class="search-box">
@@ -55,12 +57,16 @@
                     <td>
                         <div class="actions-inline">
                             <a href="{{ route('reservations.show', $reservation) }}" class="btn btn-sm btn-secondary">{{ __('Voir') }}</a>
-                            <a href="{{ route('reservations.edit', $reservation) }}" class="btn btn-sm btn-outline">{{ __('Modifier') }}</a>
-                            <form method="post" action="{{ route('reservations.destroy', $reservation) }}" style="display: inline;" onsubmit="return confirm('{{ __('Supprimer cette réservation ?') }}');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger">{{ __('Supprimer') }}</button>
-                            </form>
+                            @can('update', $reservation)
+                                <a href="{{ route('reservations.edit', $reservation) }}" class="btn btn-sm btn-outline">{{ __('Modifier') }}</a>
+                            @endcan
+                            @can('delete', $reservation)
+                                <form method="post" action="{{ route('reservations.destroy', $reservation) }}" style="display: inline;" onsubmit="return confirm('{{ __('Supprimer cette réservation ?') }}');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger">{{ __('Supprimer') }}</button>
+                                </form>
+                            @endcan
                         </div>
                     </td>
                 </tr>

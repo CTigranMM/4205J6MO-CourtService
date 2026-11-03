@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\EnregistrerReservationRequest;
 use App\Models\Reservation;
 use App\Models\Terrain;
-use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Throwable;
 
@@ -43,9 +43,6 @@ class ReservationController extends Controller
      */
     public function store(EnregistrerReservationRequest $request): RedirectResponse
     {
-        // Comme dans la section 7.6 du cours, l'utilisateur est déterminé côté serveur (en attendant le chapitre 9)
-        $user = User::query()->firstOrFail();
-
         $data = $request->safe()->except('document');
         $path = $request->file('document')?->store('reservations', 'public');
 
@@ -53,7 +50,7 @@ class ReservationController extends Controller
             $reservation = Reservation::create([
                 ...$data,
                 'document_path' => $path,
-                'user_id' => $user->id,
+                'user_id' => $request->user()->id,
                 'statut' => $request->validated('statut') ?? 'confirmee',
             ]);
         } catch (Throwable $exception) {
@@ -82,6 +79,8 @@ class ReservationController extends Controller
      */
     public function edit(Reservation $reservation): View
     {
+        Gate::authorize('update', $reservation);
+
         $terrains = Terrain::query()
             ->orderBy('nom_terrain')
             ->get();
@@ -94,6 +93,8 @@ class ReservationController extends Controller
      */
     public function update(EnregistrerReservationRequest $request, Reservation $reservation): RedirectResponse
     {
+        Gate::authorize('update', $reservation);
+
         $data = $request->safe()->except('document');
         $newPath = $request->file('document')?->store('reservations', 'public');
         $oldPath = $reservation->document_path;
@@ -123,6 +124,8 @@ class ReservationController extends Controller
      */
     public function destroy(Reservation $reservation): RedirectResponse
     {
+        Gate::authorize('delete', $reservation);
+
         $documentPath = $reservation->document_path;
 
         $reservation->delete();
@@ -140,6 +143,8 @@ class ReservationController extends Controller
      */
     public function destroyDocument(Reservation $reservation): RedirectResponse
     {
+        Gate::authorize('update', $reservation);
+
         if ($reservation->document_path) {
             Storage::disk('public')->delete($reservation->document_path);
             $reservation->update(['document_path' => null]);
