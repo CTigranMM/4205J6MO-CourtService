@@ -75,5 +75,10 @@ class DatabaseSeeder extends Seeder
             ->for($terrains->last())
             ->for($user)
             ->create();
+
+        Reservation::factory()
+            ->for($terrains->first())
+            ->for($autreJoueur)
+            ->create();
     }
 }

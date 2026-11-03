@@ -9,7 +9,7 @@ class ReservationPolicy
 {
     public function update(User $user, Reservation $reservation): bool
     {
-        return $reservation->user_id === $user->id;
+        return in_array($user->role, [User::ROLE_MANAGER, 'admin'], true) || $reservation->user_id === $user->id;
     }
 
     public function delete(User $user, Reservation $reservation): bool

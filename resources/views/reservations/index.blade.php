@@ -29,7 +29,6 @@
     <table>
         <thead>
             <tr>
-                <th>{{ __('#') }}</th>
                 <th>{{ __('Terrain') }}</th>
                 <th>{{ __('Joueur') }}</th>
                 <th>{{ __('Début') }}</th>
@@ -41,7 +40,6 @@
         <tbody>
             @forelse ($reservations as $reservation)
                 <tr>
-                    <td>{{ $reservation->id }}</td>
                     <td>
                         <strong>{{ $reservation->terrain?->nom_terrain }}</strong>
                         <div style="font-size: 0.85rem; color: #6c757d;">{{ $reservation->terrain?->surface }} ({{ $reservation->terrain?->emplacement }})</div>

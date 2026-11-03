@@ -76,5 +76,11 @@
     "Votre compte a été créé.": "Your account has been created.",
     "Identifiants invalides.": "Invalid credentials.",
     "Vérification indisponible. Réessayez.": "Verification unavailable. Please try again.",
-    "Veuillez refaire la vérification.": "Please redo the verification."
+    "Veuillez refaire la vérification.": "Please redo the verification.",
+    "Panneau d'administration": "Administration Panel",
+    "Retour aux réservations": "Back to reservations",
+    "Réservations totales": "Total bookings",
+    "Courts disponibles": "Available courts",
+    "Utilisateurs inscrits": "Registered users",
+    "Dernières réservations": "Latest bookings"
 }

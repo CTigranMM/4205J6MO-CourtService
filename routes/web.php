@@ -34,7 +34,14 @@ Route::post('/deconnexion', [AuthController::class, 'logout'])->middleware('auth
 Route::get('/compte', [CompteController::class, 'show'])->middleware('auth')->name('account.show');
 
 Route::middleware(['auth', EnsureManager::class])->group(function () {
-    Route::get('/administration', fn () => 'Administration')->name('admin.index');
+    Route::get('/administration', function () {
+        $totalReservations = \App\Models\Reservation::count();
+        $totalTerrains = \App\Models\Terrain::count();
+        $totalUsers = \App\Models\User::count();
+        $reservationsRecentes = \App\Models\Reservation::with(['terrain', 'user'])->latest()->take(5)->get();
+
+        return view('admin.index', compact('totalReservations', 'totalTerrains', 'totalUsers', 'reservationsRecentes'));
+    })->name('admin.index');
 });
 
 Route::delete('/reservations/{reservation}/document', [ReservationController::class, 'destroyDocument'])
