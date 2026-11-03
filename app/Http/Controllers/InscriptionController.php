@@ -58,8 +58,6 @@ class InscriptionController extends Controller
         Auth::login($user);
         $request->session()->regenerate();
 
-        return redirect()->route('home')
-            ->with('status', __('Votre compte a été créé.'));
+        return redirect()->route('home');
     }
 }
-
