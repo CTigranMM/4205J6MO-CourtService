@@ -17,7 +17,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // 1. Utilisateurs pour les tests et la démonstration (rôle membre et rôle responsable)
         $user = User::factory()->create([
             'name' => 'Joueur Ordinaire',
             'email' => 'joueur@servicecourt.ca',
