@@ -28,7 +28,7 @@ class AuthController extends Controller
         }
 
         return back()->withErrors([
-            'email' => __('Identifiants invalides.'),
+            'email' => 'Identifiants invalides.',
         ])->onlyInput('email');
     }
 
@@ -42,4 +42,3 @@ class AuthController extends Controller
         return redirect()->route('home');
     }
 }
-
