@@ -17,10 +17,23 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // 1. Utilisateur principal pour les tests (équivalent de Gestionnaire du blogue dans le cours)
         $user = User::factory()->create([
-            'name' => 'Gestionnaire des terrain',
+            'name' => 'Joueur Ordinaire',
             'email' => 'joueur@servicecourt.ca',
+            'password' => bcrypt('password'),
+            'role' => User::ROLE_MEMBER,
+        ]);
+
+        $autreJoueur = User::factory()->create([
+            'name' => 'Autre Joueur',
+            'email' => 'joueur2@servicecourt.ca',
+            'password' => bcrypt('password'),
+            'role' => User::ROLE_MEMBER,
+        ]);
+
+        $manager = User::factory()->manager()->create([
+            'name' => 'Responsable des terrains',
+            'email' => 'responsable@servicecourt.ca',
             'password' => bcrypt('password'),
         ]);
 
@@ -61,6 +74,11 @@ class DatabaseSeeder extends Seeder
             ->annulee()
             ->for($terrains->last())
             ->for($user)
+            ->create();
+
+        Reservation::factory()
+            ->for($terrains->first())
+            ->for($autreJoueur)
             ->create();
     }
 }

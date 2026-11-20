@@ -35,7 +35,7 @@ class ReservationCrudTest extends TestCase
 
     public function test_peut_afficher_le_formulaire_de_creation(): void
     {
-        $response = $this->get(route('reservations.create'));
+        $response = $this->actingAs($this->user)->get(route('reservations.create'));
 
         $response->assertStatus(200);
         $response->assertSee($this->terrain->nom_terrain);
@@ -46,7 +46,7 @@ class ReservationCrudTest extends TestCase
         $debut = now()->addDays(2)->format('Y-m-d\TH:i');
         $fin = now()->addDays(2)->addHour()->format('Y-m-d\TH:i');
 
-        $response = $this->post(route('reservations.store'), [
+        $response = $this->actingAs($this->user)->post(route('reservations.store'), [
             'terrain_id' => $this->terrain->id,
             'date_heure_debut' => $debut,
             'date_heure_fin' => $fin,
@@ -56,6 +56,7 @@ class ReservationCrudTest extends TestCase
         $this->assertDatabaseHas('reservations', [
             'terrain_id' => $this->terrain->id,
             'statut' => 'confirmee',
+            'user_id' => $this->user->id,
         ]);
 
         $reservation = Reservation::latest('id')->first();
@@ -65,7 +66,7 @@ class ReservationCrudTest extends TestCase
 
     public function test_la_validation_echoue_si_champs_manquants(): void
     {
-        $response = $this->post(route('reservations.store'), []);
+        $response = $this->actingAs($this->user)->post(route('reservations.store'), []);
 
         $response->assertSessionHasErrors(['terrain_id', 'date_heure_debut', 'date_heure_fin']);
     }
@@ -85,7 +86,7 @@ class ReservationCrudTest extends TestCase
     {
         $reservation = Reservation::factory()->for($this->terrain)->for($this->user)->create();
 
-        $response = $this->get(route('reservations.edit', $reservation));
+        $response = $this->actingAs($this->user)->get(route('reservations.edit', $reservation));
 
         $response->assertStatus(200);
         $response->assertSee($reservation->date_heure_debut->format('Y-m-d\TH:i'));
@@ -98,7 +99,7 @@ class ReservationCrudTest extends TestCase
         $nouveauDebut = now()->addDays(5)->format('Y-m-d\TH:i');
         $nouveauFin = now()->addDays(5)->addHour()->format('Y-m-d\TH:i');
 
-        $response = $this->patch(route('reservations.update', $reservation), [
+        $response = $this->actingAs($this->user)->patch(route('reservations.update', $reservation), [
             'terrain_id' => $this->terrain->id,
             'date_heure_debut' => $nouveauDebut,
             'date_heure_fin' => $nouveauFin,
@@ -118,7 +119,7 @@ class ReservationCrudTest extends TestCase
     {
         $reservation = Reservation::factory()->for($this->terrain)->for($this->user)->create();
 
-        $response = $this->delete(route('reservations.destroy', $reservation));
+        $response = $this->actingAs($this->user)->delete(route('reservations.destroy', $reservation));
 
         $this->assertDatabaseMissing('reservations', [
             'id' => $reservation->id,
