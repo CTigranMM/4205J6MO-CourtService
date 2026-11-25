@@ -49,13 +49,15 @@
                             <a href="{{ Storage::disk('public')->url($reservation->document_path) }}" target="_blank" class="btn btn-sm btn-outline">
                                 {{ __('Consulter / Télécharger le document') }}
                             </a>
-                            <form method="post" action="{{ route('reservations.document.destroy', $reservation) }}" onsubmit="return confirm('{{ __('Supprimer ce document ?') }}');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger">
-                                    {{ __('Supprimer le document') }}
-                                </button>
-                            </form>
+                            @can('update', $reservation)
+                                <form method="post" action="{{ route('reservations.document.destroy', $reservation) }}" onsubmit="return confirm('{{ __('Supprimer ce document ?') }}');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger">
+                                        {{ __('Supprimer le document') }}
+                                    </button>
+                                </form>
+                            @endcan
                         </div>
                     </div>
                 </li>
@@ -63,13 +65,17 @@
         </ul>
 
         <div class="actions-inline">
-            <a href="{{ route('reservations.edit', $reservation) }}" class="btn">{{ __('Modifier') }}</a>
+            @can('update', $reservation)
+                <a href="{{ route('reservations.edit', $reservation) }}" class="btn">{{ __('Modifier') }}</a>
+            @endcan
 
-            <form method="post" action="{{ route('reservations.destroy', $reservation) }}" onsubmit="return confirm('{{ __('Voulez-vous vraiment supprimer cette réservation ?') }}');">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger">{{ __('Supprimer') }}</button>
-            </form>
+            @can('delete', $reservation)
+                <form method="post" action="{{ route('reservations.destroy', $reservation) }}" onsubmit="return confirm('{{ __('Voulez-vous vraiment supprimer cette réservation ?') }}');">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">{{ __('Supprimer') }}</button>
+                </form>
+            @endcan
 
             <a href="{{ route('reservations.index') }}" class="btn btn-secondary">{{ __('Retour à la liste') }}</a>
         </div>

@@ -10,7 +10,26 @@
 <body>
     <header>
         <div class="navbar">
-            <a href="{{ route('reservations.index') }}" class="brand">ServiceCourt</a>
+            <a href="{{ route('home') }}" class="brand">ServiceCourt</a>
+
+            <div class="nav-links">
+                <a href="{{ route('reservations.index') }}">{{ __('Réservations') }}</a>
+                @auth
+                    <span>{{ auth()->user()->name }}</span>
+                    <a href="{{ route('account.show') }}">{{ __('Mon compte') }}</a>
+                    @if (auth()->user()?->role === \App\Models\User::ROLE_MANAGER)
+                        <a href="{{ route('admin.index') }}">{{ __('Administration') }}</a>
+                    @endif
+                    <form method="post" action="{{ route('logout') }}" style="display: inline;">
+                        @csrf
+                        <button type="submit">{{ __('Se déconnecter') }}</button>
+                    </form>
+                @endauth
+                @guest
+                    <a href="{{ route('login') }}">{{ __('Connexion') }}</a>
+                    <a href="{{ route('register') }}">{{ __('Inscription') }}</a>
+                @endguest
+            </div>
 
             <form method="post" action="{{ route('locale.update') }}">
                 @csrf
