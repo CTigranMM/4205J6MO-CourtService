@@ -171,4 +171,50 @@ class ReservationCrudTest extends TestCase
         $response->assertRedirect(route('reservations.index'));
         $response->assertSessionHas('status', 'Réservation supprimée avec succès.');
     }
+
+    public function test_un_membre_ne_peut_pas_modifier_ou_supprimer_une_reservation_a_moins_de_24h(): void
+    {
+        $reservation = Reservation::factory()->moinsDe24Heures()->for($this->terrain)->for($this->user)->create();
+
+        $this->actingAs($this->user)
+            ->patch(route('reservations.update', $reservation), [
+                'terrain_id' => $this->terrain->id,
+                'date_heure_debut' => now()->addDays(4)->format('Y-m-d\TH:i'),
+                'date_heure_fin' => now()->addDays(4)->addHour()->format('Y-m-d\TH:i'),
+                'statut' => 'annulee',
+            ])
+            ->assertForbidden();
+
+        $this->actingAs($this->user)
+            ->delete(route('reservations.destroy', $reservation))
+            ->assertForbidden();
+
+        $this->assertDatabaseHas('reservations', [
+            'id' => $reservation->id,
+            'statut' => 'confirmee',
+        ]);
+    }
+
+    public function test_un_membre_ne_peut_pas_modifier_une_reservation_passee(): void
+    {
+        $reservation = Reservation::factory()->passee()->for($this->terrain)->for($this->user)->create();
+
+        $this->actingAs($this->user)
+            ->get(route('reservations.edit', $reservation))
+            ->assertForbidden();
+
+        $this->actingAs($this->user)
+            ->patch(route('reservations.update', $reservation), [
+                'terrain_id' => $this->terrain->id,
+                'date_heure_debut' => now()->addDays(4)->format('Y-m-d\TH:i'),
+                'date_heure_fin' => now()->addDays(4)->addHour()->format('Y-m-d\TH:i'),
+                'statut' => 'annulee',
+            ])
+            ->assertForbidden();
+
+        $this->assertDatabaseHas('reservations', [
+            'id' => $reservation->id,
+            'statut' => 'confirmee',
+        ]);
+    }
 }
