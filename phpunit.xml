@@ -20,6 +20,10 @@
     <php>
         <env name="APP_ENV" value="testing" force="true"/>
         <server name="APP_ENV" value="testing" force="true"/>
+        <env name="APP_LOCALE" value="fr" force="true"/>
+        <server name="APP_LOCALE" value="fr" force="true"/>
+        <env name="APP_FALLBACK_LOCALE" value="fr" force="true"/>
+        <server name="APP_FALLBACK_LOCALE" value="fr" force="true"/>
         <env name="APP_KEY" value="base64:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=" force="true"/>
         <server name="APP_KEY" value="base64:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=" force="true"/>
         <env name="APP_MAINTENANCE_DRIVER" value="file"/>
