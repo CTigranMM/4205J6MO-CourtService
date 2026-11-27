@@ -71,6 +71,49 @@ class ReservationCrudTest extends TestCase
         $response->assertSessionHasErrors(['terrain_id', 'date_heure_debut', 'date_heure_fin']);
     }
 
+    public function test_une_reservation_chevauchant_un_creneau_confirme_est_refusee(): void
+    {
+        $debutExistant = now()->addDays(3)->setTime(10, 0);
+        $finExistant = now()->addDays(3)->setTime(11, 0);
+
+        Reservation::factory()->for($this->terrain)->for($this->user)->create([
+            'date_heure_debut' => $debutExistant,
+            'date_heure_fin' => $finExistant,
+            'statut' => 'confirmee',
+        ]);
+
+        $response = $this->actingAs($this->user)->post(route('reservations.store'), [
+            'terrain_id' => $this->terrain->id,
+            'date_heure_debut' => $debutExistant->copy()->addMinutes(30)->format('Y-m-d\TH:i'),
+            'date_heure_fin' => $finExistant->copy()->addMinutes(30)->format('Y-m-d\TH:i'),
+            'statut' => 'confirmee',
+        ]);
+
+        $response->assertSessionHasErrors('date_heure_debut');
+        $this->assertDatabaseCount('reservations', 1);
+    }
+
+    public function test_un_creneau_libere_par_une_annulation_peut_etre_reserve(): void
+    {
+        $debut = now()->addDays(3)->setTime(14, 0);
+        $fin = now()->addDays(3)->setTime(15, 0);
+
+        Reservation::factory()->annulee()->for($this->terrain)->for($this->user)->create([
+            'date_heure_debut' => $debut,
+            'date_heure_fin' => $fin,
+        ]);
+
+        $response = $this->actingAs($this->user)->post(route('reservations.store'), [
+            'terrain_id' => $this->terrain->id,
+            'date_heure_debut' => $debut->format('Y-m-d\TH:i'),
+            'date_heure_fin' => $fin->format('Y-m-d\TH:i'),
+            'statut' => 'confirmee',
+        ]);
+
+        $response->assertRedirect();
+        $this->assertDatabaseCount('reservations', 2);
+    }
+
     public function test_peut_afficher_le_detail_d_une_reservation(): void
     {
         $reservation = Reservation::factory()->for($this->terrain)->for($this->user)->create();
@@ -127,5 +170,51 @@ class ReservationCrudTest extends TestCase
 
         $response->assertRedirect(route('reservations.index'));
         $response->assertSessionHas('status', 'Réservation supprimée avec succès.');
+    }
+
+    public function test_un_membre_ne_peut_pas_modifier_ou_supprimer_une_reservation_a_moins_de_24h(): void
+    {
+        $reservation = Reservation::factory()->moinsDe24Heures()->for($this->terrain)->for($this->user)->create();
+
+        $this->actingAs($this->user)
+            ->patch(route('reservations.update', $reservation), [
+                'terrain_id' => $this->terrain->id,
+                'date_heure_debut' => now()->addDays(4)->format('Y-m-d\TH:i'),
+                'date_heure_fin' => now()->addDays(4)->addHour()->format('Y-m-d\TH:i'),
+                'statut' => 'annulee',
+            ])
+            ->assertForbidden();
+
+        $this->actingAs($this->user)
+            ->delete(route('reservations.destroy', $reservation))
+            ->assertForbidden();
+
+        $this->assertDatabaseHas('reservations', [
+            'id' => $reservation->id,
+            'statut' => 'confirmee',
+        ]);
+    }
+
+    public function test_un_membre_ne_peut_pas_modifier_une_reservation_passee(): void
+    {
+        $reservation = Reservation::factory()->passee()->for($this->terrain)->for($this->user)->create();
+
+        $this->actingAs($this->user)
+            ->get(route('reservations.edit', $reservation))
+            ->assertForbidden();
+
+        $this->actingAs($this->user)
+            ->patch(route('reservations.update', $reservation), [
+                'terrain_id' => $this->terrain->id,
+                'date_heure_debut' => now()->addDays(4)->format('Y-m-d\TH:i'),
+                'date_heure_fin' => now()->addDays(4)->addHour()->format('Y-m-d\TH:i'),
+                'statut' => 'annulee',
+            ])
+            ->assertForbidden();
+
+        $this->assertDatabaseHas('reservations', [
+            'id' => $reservation->id,
+            'statut' => 'confirmee',
+        ]);
     }
 }

@@ -19,7 +19,7 @@ class ReservationFactory extends Factory
      */
     public function definition(): array
     {
-        $debut = fake()->dateTimeBetween('+1 days', '+10 days');
+        $debut = fake()->dateTimeBetween('+2 days', '+10 days');
         $fin = (clone $debut)->modify('+1 hour');
 
         return [
